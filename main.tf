@@ -1,3 +1,31 @@
+# Create IAM role EB instances
+resource "aws_iam_role" "sfs_bean_role" {
+  name               = "sfs-bean-role"
+  assume_role_policy = data.aws_iam_policy_document.instance_assume_role_policy.json
+  managed_policy_arns = [
+    "arn:aws:iam::aws:policy/AdministratorAccess-AWSElasticBeanstalk",
+    "arn:aws:iam::aws:policy/AWSElasticBeanstalkCustomPlatformforEC2Role",
+    "arn:aws:iam::aws:policy/service-role/AWSElasticBeanstalkRoleSNS",
+    "arn:aws:iam::aws:policy/AWSElasticBeanstalkWebTier"
+  ]
+
+  tags = {
+    Project = "EB Docker React"
+  }
+
+}
+
+# Create Instance Profile from sfs_bean_role
+
+resource "aws_iam_instance_profile" "sfs_instance_profile" {
+  name = "sfs-bean-role"
+  role = aws_iam_role.sfs_bean_role.name
+
+  tags = {
+    Project = "EB Docker React"
+  }
+}
+
 # Create elastic beanstalk application
  
 resource "aws_elastic_beanstalk_application" "elasticapp" {
@@ -19,7 +47,7 @@ resource "aws_elastic_beanstalk_environment" "beanstalkappenv" {
   setting {
     namespace = "aws:autoscaling:launchconfiguration"
     name      = "IamInstanceProfile"
-    value     =  "vprofile-bean-role"
+    value     =  aws_iam_instance_profile.sfs_instance_profile.name
   }
   setting {
     namespace = "aws:ec2:vpc"
