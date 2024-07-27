@@ -26,3 +26,11 @@ variable "public_subnets" {
                 "subnet-0a0e7b30606ae27ce",
                 "subnet-06713a285c37f58a5"]
 }
+
+variable "code_dist" {
+    default = "code"
+}
+
+variable "code_dist_version" {
+    default = "1.0"
+}

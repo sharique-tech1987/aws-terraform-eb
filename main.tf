@@ -1,3 +1,15 @@
+# create S3 bucket to store code
+resource "aws_s3_bucket" "code_bucket" {
+  bucket = "code-dist-elb-dist"
+}
+
+resource "aws_s3_object" "dist_item" {
+  key    = "dist-${basename("${var.code_dist}-${var.code_dist_version}")}.zip"
+  bucket = "${aws_s3_bucket.code_bucket.id}"
+  source = data.archive_file.code_dist_zip.output_path
+}
+
+
 # Create IAM role EB instances
 resource "aws_iam_role" "sfs_bean_role" {
   name               = "sfs-bean-role"
@@ -31,6 +43,15 @@ resource "aws_iam_instance_profile" "sfs_instance_profile" {
 resource "aws_elastic_beanstalk_application" "elasticapp" {
   name = var.elasticapp
 }
+
+# Create elastic beanstalk application version
+resource "aws_elastic_beanstalk_application_version" "default" {
+  name        = "${var.code_dist}${var.code_dist_version}"
+  application = aws_elastic_beanstalk_application.elasticapp.name
+  description = "application version created by terraform"
+  bucket      = aws_s3_bucket.code_bucket.id
+  key         = aws_s3_object.dist_item.id
+}
  
 # Create elastic beanstalk Environment
  
@@ -38,6 +59,8 @@ resource "aws_elastic_beanstalk_environment" "beanstalkappenv" {
   name                = var.beanstalkappenv
   application         = aws_elastic_beanstalk_application.elasticapp.name
   solution_stack_name = var.solution_stack_name
+  # Needs to be set if we use aws_elastic_beanstalk_application_version resource
+  version_label = aws_elastic_beanstalk_application_version.default.name
  
   setting {
     namespace = "aws:ec2:vpc"
