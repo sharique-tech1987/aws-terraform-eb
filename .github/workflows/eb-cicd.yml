@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+    paths-ignore:
+      - 'infra/**'
 jobs:
   deploy:
     runs-on: ubuntu-latest # the operating system your job should run on
