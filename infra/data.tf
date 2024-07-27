@@ -15,3 +15,15 @@ data "archive_file" "code_dist_zip"{
     source_dir = "../${path.module}/${var.code_dist}"
     output_path = "../${path.module}/${var.code_dist}${var.code_dist_version}.zip"
 }
+
+data "aws_subnets" "default_vpc" {
+  filter {
+    name   = "vpc-id"
+    values = [var.vpc_id]
+  }
+}
+
+data "aws_subnet" "default_subnets" {
+  for_each = toset(data.aws_subnets.default_vpc.ids)
+  id       = each.value
+}
