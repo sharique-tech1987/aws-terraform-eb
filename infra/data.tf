@@ -16,6 +16,7 @@ data "archive_file" "code_dist_zip"{
     output_path = "../${path.module}/${var.code_dist}${var.code_dist_version}.zip"
 }
 
+# Fetch subnets of the given vpc
 data "aws_subnets" "default_vpc" {
   filter {
     name   = "vpc-id"

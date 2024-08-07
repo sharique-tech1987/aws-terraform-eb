@@ -3,6 +3,8 @@ resource "aws_s3_bucket" "code_bucket" {
   bucket = "code-dist-elb-dist"
 }
 
+# upload code in s3 bucket
+# EB needs code in zip format
 resource "aws_s3_object" "dist_item" {
   key    = "dist-${basename("${var.code_dist}-${var.code_dist_version}")}.zip"
   bucket = "${aws_s3_bucket.code_bucket.id}"
@@ -10,7 +12,9 @@ resource "aws_s3_object" "dist_item" {
 }
 
 
-# Create IAM role EB instances
+# Create IAM role and assigned 
+# managed policies to access EB and
+# store application on it
 resource "aws_iam_role" "sfs_bean_role" {
   name               = "sfs-bean-role"
   assume_role_policy = data.aws_iam_policy_document.instance_assume_role_policy.json
@@ -28,7 +32,7 @@ resource "aws_iam_role" "sfs_bean_role" {
 }
 
 # Create Instance Profile from sfs_bean_role
-
+# Needed to provide access of AWS services to EC2
 resource "aws_iam_instance_profile" "sfs_instance_profile" {
   name = "sfs-bean-role"
   role = aws_iam_role.sfs_bean_role.name
@@ -59,7 +63,7 @@ resource "aws_elastic_beanstalk_environment" "beanstalkappenv" {
   name                = var.beanstalkappenv
   application         = aws_elastic_beanstalk_application.elasticapp.name
   solution_stack_name = var.solution_stack_name
-  # Needs to be set if we use aws_elastic_beanstalk_application_version resource
+  # Note: Needs to be set if we use aws_elastic_beanstalk_application_version resource
   version_label = aws_elastic_beanstalk_application_version.default.name
  
   setting {
@@ -78,6 +82,7 @@ resource "aws_elastic_beanstalk_environment" "beanstalkappenv" {
     value     =  "True"
   }
  
+#  Select the available subnets dynamically
   setting {
     namespace = "aws:ec2:vpc"
     name      = "Subnets"
