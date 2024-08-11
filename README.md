@@ -3,7 +3,7 @@
 
 ## This project automates deploying a Dockerized React app to AWS Elastic Beanstalk using Terraform and GitHub Actions.
 
-This sample project demonstrates the end-to-end automation of deploying a Dockerized React app to AWS Elastic Beanstalk. Using Terraform, it creates and uploads a code zip file to an S3 bucket, sets up an Elastic Beanstalk environment, and deploys the application version. GitHub Actions is integrated for continuous deployment, ensuring automatic updates to the Elastic Beanstalk environment when code changes occur. Thanks to [Muhammed Ali](https://khabdrick-dev.medium.com/) for the react app code by  This example guides you through performing the following actions:
+This sample project demonstrates the end-to-end automation of deploying a Dockerized React app to AWS Elastic Beanstalk. Using Terraform, it creates and uploads a code zip file to an S3 bucket, sets up an Elastic Beanstalk environment, and deploys the application version. GitHub Actions is integrated for continuous deployment, ensuring automatic updates to the Elastic Beanstalk environment when code changes occur. Thanks to [Muhammed Ali](https://khabdrick-dev.medium.com/) for the react app code. This example guides you through performing the following actions:
 
 * Develop a React application.
 * Create a Dockerfile for the React application.
