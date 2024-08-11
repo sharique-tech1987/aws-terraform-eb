@@ -1,7 +1,7 @@
 
 # Dockerized React App on Elastic BeanStalk
 
-## This project automates deploying a Dockerized React app to AWS Elastic Beanstalk using Terraform for setup and GitHub Actions for continuous deployment.
+## This project automates deploying a Dockerized React app to AWS Elastic Beanstalk using Terraform and GitHub Actions.
 
 This sample project demonstrates the end-to-end automation of deploying a Dockerized React app to AWS Elastic Beanstalk. Using Terraform, it creates and uploads a code zip file to an S3 bucket, sets up an Elastic Beanstalk environment, and deploys the application version. GitHub Actions is integrated for continuous deployment, ensuring automatic updates to the Elastic Beanstalk environment when code changes occur. This example guides you through performing the following actions:
 
@@ -21,7 +21,13 @@ This sample project demonstrates the end-to-end automation of deploying a Docker
 ## How to use this example project
 * Setup AWS CLI.
 * Generate keys on AWS to use with AWS CLI.
+* Setup AWS keys for CI/CD.
 * Install terraform.
+
+### Setup AWS keys for CI/CD
+* Create a user with __AdministratorAccess-AWSElasticBeanstalk__ and __AWSElasticBeanstalkReadOnly__ permission.
+* Generate keys with the option "Application running on an AWS compute service"
+* Put the keys under Settings > Secrets and variables > Actions > repository secrets in github.
 
 Run these commands from the root directory of the project
 ```bash
