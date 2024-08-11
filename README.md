@@ -15,7 +15,7 @@ This sample project demonstrates the end-to-end automation of deploying a Docker
 * Implement continuous deployment of the Dockerized React application to Elastic Beanstalk using GitHub Actions.
 
 ## Infrastructure Diagram
-![Infrastructure Diagram](https://drive.google.com/file/d/1HBwI8ug36U3SoIOCmla3jxFMAq9T52Y9/view?usp=drive_link)
+![Infrastructure Diagram]![Infrastructure Diagram](./infra_diagram.png)
 
 
 ## How to use this example project
